@@ -1,3 +1,8 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -24,11 +29,7 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+
 }
 
 h1 {
@@ -47,23 +48,43 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+
+
+
+.wrapper{
+  display: flex;
+  padding-top: 250px;
+  gap: 100px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form{
+  min-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  .input{
+    padding: 10px 15px;
+    padding-left: 10px;
+    font-size: 20px;
+    outline: none;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid rgb(155, 155, 155);
+
+    &::placeholder{
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(170, 170, 170, 0.306);
+    }
   }
 }

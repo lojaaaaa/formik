@@ -3,55 +3,70 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 
 function App() {
 
-
+  const validateEmail = (value) =>{
+    const errors = {};
+    if (!value) {
+      errors.email = 'Requiredfgfgfgg';
+    } 
+    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+      errors.email = 'Invalid email address';
+    }
+    return errors;
+  }
 
   return (
-    <div>
-      <h1>Any place in your app!</h1>
+    <div className="wrapper">
+      <h1>My Form</h1>
       <Formik
         initialValues={{ 
+          name:'',
           email: '', 
-          password: '' 
+          password: '' ,
+          confirmPassword: ''
         }}
+
         validate={values => {
-          const errors = {};
+          const errors = {}
+
+          if (!values.name) {
+            errors.name = 'Required';
+          } 
           if (!values.email) {
             errors.email = 'Required';
           } 
+          if (!values.password) {
+            errors.password = 'Required';
+          } 
           else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-          errors.email = 'Invalid email address';
+            errors.email = 'Invalid email address';
           }
-
-          return errors;}}
+          return errors;
+        }}
 
         onSubmit={(values) => console.log(values)}
+      >
 
-    >
+        {({ isSubmitting }) => (
+          <Form className="form">
+            <Field className='input' type="text" name="name" placeholder="Enter your name"/>
+            <ErrorMessage name="name" component="div" />
 
-      {({ isSubmitting }) => (
+            <Field className='input' type="email" name="email" placeholder="Email"/>
+            <ErrorMessage name="email" component="div" />
 
-        <Form>
+            <Field className='input' type="password" name="password" placeholder="Password"/>
+            <ErrorMessage name="password" component="div" />
 
-          <Field type="email" name="email" />
+            <Field className='input' type="password" name="confirmPassword" placeholder="Confirm your password"/>
+            <ErrorMessage name="confirmPassword" component="div" />
 
-          <ErrorMessage name="email" component="div" />
+            <button className='button' type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </Form>
+        )}
 
-          <Field type="password" name="password" />
-
-          <ErrorMessage name="password" component="div" />
-
-          <button type="submit" disabled={isSubmitting}>
-
-            Submit
-
-          </button>
-
-        </Form>
-
-      )}
-
-    </Formik>
-
+      </Formik>
     </div>
   )
 }
