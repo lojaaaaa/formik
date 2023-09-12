@@ -4,49 +4,69 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 function App() {
 
   const validateEmail = (value) =>{
-    const errors = {};
     if (!value) {
-      errors.email = 'Requiredfgfgfgg';
+      return'*Обязательное поле';
     } 
     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-      errors.email = 'Invalid email address';
+      return 'Email не валидный';
     }
-    return errors;
+    return null;
   }
+
+  const validateName = (value) => !value ? '*Обязательное поле': null
+
+  const validatePassword = (value) =>{
+
+    if (!value) {
+      return "*Обязательное поле";
+    } 
+    else if (value.length < 2) {
+      return "Пароль должен содержать как минимум 2 символов";
+    }
+    else if (value === value.toLowerCase()){
+      return "Пароль должен содержать заглавные буквы";
+    }
+    return null;
+  }
+
+  const validateConfirmPassword = (value, password) => {
+    if (!value) {
+      return "*Обязательное поле";
+    } else if (value !== password) {
+      return "Пароли не совпадают";
+    }
+    return null;
+  };
+
 
   return (
     <div className="wrapper">
       <h1>My Form</h1>
       <Formik
+
         initialValues={{ 
           name:'',
           email: '', 
           password: '' ,
-          confirmPassword: ''
+          confirmPassword: '',
         }}
 
         validate={values => {
           const errors = {}
 
-          if (!values.name) {
-            errors.name = 'Required';
-          } 
-          if (!values.email) {
-            errors.email = 'Required';
-          } 
-          if (!values.password) {
-            errors.password = 'Required';
-          } 
-          else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-            errors.email = 'Invalid email address';
-          }
+          errors.name = validateName(values.name)
+          errors.email = validateEmail(values.email)
+          errors.password = validatePassword(values.password)
+          errors.confirmPassword = validateConfirmPassword(values.confirmPassword, values.password)
+
           return errors;
         }}
 
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => console.log("Form is validated! Submitting the form...", values)}
+
       >
 
-        {({ isSubmitting }) => (
+        {() => (
           <Form className="form">
             <Field className='input' type="text" name="name" placeholder="Enter your name"/>
             <ErrorMessage name="name" component="div" />
@@ -60,7 +80,7 @@ function App() {
             <Field className='input' type="password" name="confirmPassword" placeholder="Confirm your password"/>
             <ErrorMessage name="confirmPassword" component="div" />
 
-            <button className='button' type="submit" disabled={isSubmitting}>
+            <button className='button' type="submit">
               Submit
             </button>
           </Form>
