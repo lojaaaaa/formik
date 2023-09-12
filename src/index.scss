@@ -65,9 +65,11 @@ button {
   gap: 45px;
 
   .item{
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 15px;
+
   }
 
   .input{
@@ -85,4 +87,22 @@ button {
       color: rgba(170, 170, 170, 0.306);
     }
   }
+
+}
+
+.img{
+  position: absolute;
+  cursor: pointer;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background-image: url('https://esia.gosuslugi.ru/login/password-hidden.d22dbe0d7b7cfe85.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.show{
+  background-image: url('https://esia.gosuslugi.ru/login/password-shown.1aa8293f46527c6c.svg');
+  
 }

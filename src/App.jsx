@@ -1,54 +1,54 @@
 import { useFormik } from "formik";
+import { useState } from "react";
 
+// https://esia.gosuslugi.ru/login/password-hidden.d22dbe0d7b7cfe85.svg
 
-
-const validateEmail = (value) =>{
-  if (!value) {
-    return'*Обязательное поле';
-  } 
-  else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-    return 'Email не валидный';
-  }
-  return null;
-}
-
-const validateName = (value) => !value ? '*Обязательное поле': null
-
-const validatePassword = (value) =>{
-
-  if (!value) {
-    return "*Обязательное поле";
-  } 
-  else if (value.length < 2) {
-    return "Пароль должен содержать как минимум 2 символов";
-  }
-  else if (value === value.toLowerCase()){
-    return "Пароль должен содержать заглавные буквы";
-  }
-  return null;
-}
-
-const validateConfirmPassword = (value, password) => {
-  if (!value) {
-    return "*Обязательное поле";
-  } else if (value !== password) {
-    return "Пароли не совпадают";
-  }
-  return null;
-};
-
+//https://esia.gosuslugi.ru/login/password-shown.1aa8293f46527c6c.svg
 
 const validate = (values) =>{
   const errors = {}
-  errors.name = validateName(values.name)
-  errors.email = validateEmail(values.email)
-  errors.password = validatePassword(values.password)
-  errors.confirmPassword = validateConfirmPassword(values.confirmPassword, values.password)
+
+  // Валидация имени
+  if (!values.name) {
+    errors.name = '*Обязательное поле';
+  } 
+  else if (values.name.length > 15) {
+    errors.name = 'Должно быть менее 15 символов';
+  }
+
+  // Валидация email
+  if (!values.email) {
+    errors.email = '*Обязательное поле';
+  } 
+  else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+    errors.email = 'Email не валидный';
+  }
+
+  // Валидация пароля
+  if (!values.password) {
+    errors.password = '*Обязательное поле';
+  } 
+  else if (values.password.length < 6) {
+    errors.password = "Пароль должен содержать как минимум 6 символов";
+  }
+  else if (values.password === values.password.toLowerCase()){
+    errors.password = "Пароль должен содержать заглавные буквы";
+  }
+
+  // Валидация подтверждения пароля
+  if (!values.confirmPassword) {
+    errors.confirmPassword = '*Обязательное поле';
+  } 
+  else if (values.password !== values.confirmPassword) {
+    errors.confirmPassword = "Пароли не совпадают";
+  }
+
 
   return errors;
 }
 
 function App() {
+
   const formik = useFormik({
     initialValues: {
       name:'',
@@ -60,9 +60,17 @@ function App() {
     onSubmit: values => {
       console.log(values)
     }
-    
+  
   })
 
+
+  const changeTypePassword = () =>{
+    setIsShow(prev => !prev)
+    setPasswordType(prev => !prev)
+  }
+
+  const [isShow, setIsShow] = useState(false);
+  const [passwordType, setPasswordType] = useState(false)
 
   return (
     <div className="wrapper">
@@ -73,6 +81,7 @@ function App() {
             className='input'
             type="text"
             name="name"
+            onBlur={formik.handleBlur}
             placeholder="Enter your name"
             onChange={formik.handleChange}
             value={formik.values.name}
@@ -96,7 +105,7 @@ function App() {
         <div className="item">
           <input 
             className='input'
-            type="password"
+            type={passwordType ? 'text' : 'password'}
             name="password"
             placeholder="Password"
             onBlur={formik.handleBlur}
@@ -104,12 +113,13 @@ function App() {
             value={formik.values.password}
           />
           {formik.errors.password && formik.touched.password && <p>{formik.errors.password}</p>}
+          <div onClick={changeTypePassword} className={`img ${isShow ? 'show' : ''}`}></div>
         </div>
 
         <div className="item">
           <input 
             className='input'
-            type="password"
+            type={passwordType ? 'text' : 'password'}
             name="confirmPassword"
             placeholder="Confirm your password"
             onBlur={formik.handleBlur}
