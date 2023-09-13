@@ -1,9 +1,7 @@
 import { useFormik } from "formik";
 import { useState } from "react";
+import * as yup from 'yup'
 
-// https://esia.gosuslugi.ru/login/password-hidden.d22dbe0d7b7cfe85.svg
-
-//https://esia.gosuslugi.ru/login/password-shown.1aa8293f46527c6c.svg
 
 const validate = (values) =>{
   const errors = {}
@@ -47,6 +45,28 @@ const validate = (values) =>{
   return errors;
 }
 
+
+const validationSchema  = yup.object().shape({
+  name: yup
+    .string()
+    .required('*Обязательное поле')
+    .max(15, 'Должно быть менее 15 символов'),
+  email: yup
+    .string()
+    .required('*Обязательное поле')
+    .email('Email не валидный'),
+  password: yup
+    .string()
+    .required('*Обязательное поле')
+    .min(6, 'Пароль должен содержать как минимум 6 символов')
+    .test('has-uppercase', 'Пароль должен содержать заглавные буквы', 
+      (value) => /[A-Z]/.test(value)),
+  confirmPassword: yup
+    .string()
+    .required('*Обязательное поле')
+    .oneOf([yup.ref('password')], 'Пароли не совпадают'),
+})
+
 function App() {
 
   const formik = useFormik({
@@ -56,7 +76,7 @@ function App() {
       password: '' ,
       confirmPassword: '',
     },
-    validate,
+    validationSchema,
     onSubmit: values => {
       console.log(values)
     }
