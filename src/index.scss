@@ -50,16 +50,27 @@ button {
 
 
 .wrapper{
+
+
+
+
+}
+
+
+.container{
+  max-width: 530px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+.content__container{
   display: flex;
-  padding-top: 250px;
-  gap: 100px;
-  justify-content: center;
   flex-direction: column;
-  align-items: center;
+  gap: 100px;
+  padding-top: 150px;
+  padding-bottom: 50px;
 }
 
 .form{
-  min-width: 500px;
   display: flex;
   flex-direction: column;
   gap: 45px;
@@ -106,3 +117,5 @@ button {
   background-image: url('https://esia.gosuslugi.ru/login/password-shown.1aa8293f46527c6c.svg');
   
 }
+
+
