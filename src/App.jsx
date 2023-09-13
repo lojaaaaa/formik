@@ -3,49 +3,6 @@ import { useState } from "react";
 import * as yup from 'yup'
 
 
-const validate = (values) =>{
-  const errors = {}
-
-  // Валидация имени
-  if (!values.name) {
-    errors.name = '*Обязательное поле';
-  } 
-  else if (values.name.length > 15) {
-    errors.name = 'Должно быть менее 15 символов';
-  }
-
-  // Валидация email
-  if (!values.email) {
-    errors.email = '*Обязательное поле';
-  } 
-  else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-    errors.email = 'Email не валидный';
-  }
-
-  // Валидация пароля
-  if (!values.password) {
-    errors.password = '*Обязательное поле';
-  } 
-  else if (values.password.length < 6) {
-    errors.password = "Пароль должен содержать как минимум 6 символов";
-  }
-  else if (values.password === values.password.toLowerCase()){
-    errors.password = "Пароль должен содержать заглавные буквы";
-  }
-
-  // Валидация подтверждения пароля
-  if (!values.confirmPassword) {
-    errors.confirmPassword = '*Обязательное поле';
-  } 
-  else if (values.password !== values.confirmPassword) {
-    errors.confirmPassword = "Пароли не совпадают";
-  }
-
-
-  return errors;
-}
-
-
 const validationSchema  = yup.object().shape({
   name: yup
     .string()
